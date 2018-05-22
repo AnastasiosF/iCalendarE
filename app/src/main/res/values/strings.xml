@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">iCalendarE</string>
+    <string name="main_activity">Home</string>
+    <string name="settings_activity">Settings</string>
+</resources>
