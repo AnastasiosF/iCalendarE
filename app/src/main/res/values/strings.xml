@@ -2,4 +2,29 @@
     <string name="app_name">iCalendarE</string>
     <string name="main_activity">Home</string>
     <string name="settings_activity">Settings</string>
+
+
+
+    <string-array name="countries_array">
+        <item>Afghanistan</item>
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>American Samoa</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Anguilla</item>
+        <item>Antarctica</item>
+    </string-array>
+
+    <string-array name="periods_to_alert">
+        <item>30min</item>
+        <item>1hour</item>
+        <item>2hour</item>
+        <item>3hour</item>
+        <item>4hour</item>
+        <item>5hour</item>
+        <item>6hour</item>
+    </string-array>
+
+
 </resources>

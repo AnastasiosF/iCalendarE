@@ -70,8 +70,8 @@ public class ActionBarInit {
 
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
-        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_2);
-        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_2);
+        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_3);
+        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
 
         rightBmb.setBoomEnum(BoomEnum.PARABOLA_2);
         rightBmb.setDuration(XRONOS_EKTELESIS_EFE);
@@ -114,6 +114,30 @@ public class ActionBarInit {
                     }
                 });
         rightBmb.addBuilder(mainActivity);
+
+        HamButton.Builder eventActivity = new HamButton.Builder();
+        eventActivity.shadowEffect(true);
+        eventActivity.normalText("Add new event");
+        eventActivity.normalImageRes(R.drawable.ic_event_black_24dp);
+        eventActivity.normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
+        eventActivity.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                final Intent i = new Intent(context, EventActivity.class);
+
+                //Delay gia na paizei swsta to efe
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // yourMethod();
+                        context.startActivity(i);
+                    }
+                }, DELAY_GIA_NA_KSEKINHSH_ACTIVITY);
+
+            }
+        });
+        rightBmb.addBuilder(eventActivity);
 
         HamButton.Builder settingsActivity = new HamButton.Builder();
         settingsActivity.shadowEffect(true);

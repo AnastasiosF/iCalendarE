@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:hint="Title of the event"
+                    app:met_baseColor="#000000"
+                    app:met_errorColor="@color/color_error"
+                    app:met_floatingLabel="highlight"
+                    app:met_maxCharacters="30"
+                    app:met_primaryColor="@color/colorPrimary"
+                    app:met_textColorHint="@color/accent"
+                    app:met_underlineColor="#003587"
+                    app:met_floatingLabelTextColor="#8805ad" />
+
+                <Button
+                    android:id="@+id/date_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:text="Date"
+                    android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+
+                <Button
+                    android:id="@+id/time_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:text="Time"
+                    android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+
+
+
+                <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/autocomplete_contacts"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:hint="Contacts"
+                    app:met_floatingLabel="highlight"
+
+                    />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/editText_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:hint="Notes" />
+
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    app:ms_multiline="false"
+                    app:ms_hint="hint"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelText="floating label"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_arrowColor="@color/colorPrimary"
+                    app:ms_thickness="2px"
+
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

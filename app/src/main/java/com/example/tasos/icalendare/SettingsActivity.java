@@ -130,6 +130,8 @@ public class SettingsActivity extends AppCompatActivity {
                 event.setColor(getResources().getColor(R.color.event_color_02));
                 events.add(event);
 
+                event =new WeekViewEvent();
+
                 return events;
             }
         };
