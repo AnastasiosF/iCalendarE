@@ -41,6 +41,8 @@ public class EventActivity extends AppCompatActivity {
     MaterialEditText editTextMail;
     MaterialAutoCompleteTextView autoCompleteTextView;
     Spinner dropdown;
+    Spinner dropdownToAlertUser;
+    Spinner dropdownTimeToAlertContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,37 +78,38 @@ public class EventActivity extends AppCompatActivity {
                 emfanisiEpilogisWras();
             }
         });
-
+        /*
         //Symmetexontes Aytomath symplhrwsh
         // Get a reference to the AutoCompleteTextView in the layout
         autoCompleteTextView = findViewById(R.id.autocomplete_contacts);
 
         // Create the adapter and set it to the AutoCompleteTextView
-        Contacts contacts = new Contacts(getBaseContext());
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts.getContactArrayList());
         autoCompleteTextView.setAdapter(adapter);
-
-        /*
-        //Spinner
-        dropdown = (MaterialSpinner) findViewById(R.id.spinner);
-
-        String[] items = getResources().getStringArray(R.array.countries_array);
-
-
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contacts.getContactArrayList());
-        dropdown.setOnItemSelectedListener(this);
-        dropdown.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getBaseContext(), "Selected: ", Toast.LENGTH_LONG).show();
-                dropdown.setEnabled(true);
-                dropdown.refreshDrawableState();
-                return false;
-            }
-        });
-        dropdown.setAdapter(adapter1);
         */
+
+        //Spinner for contacts
+        Contacts contacts = new Contacts(getBaseContext());
+        dropdown = (MaterialSpinner) findViewById(R.id.spinner_for_contacts);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contacts.getContactArrayList());
+        dropdown.setAdapter(adapter1);
+
+
+        //Values of periods
+        String[] timesToAlert = getResources().getStringArray(R.array.periods_to_alert);
+
+        //Spinner to alert the USER
+        dropdownToAlertUser =  (MaterialSpinner) findViewById(R.id.time_to_alert_user);
+        ArrayAdapter<String> adapterAlertUser = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,timesToAlert);
+        dropdownToAlertUser.setAdapter(adapterAlertUser);
+
+
+        //Spinner to alert the Contact
+        dropdownTimeToAlertContact =(MaterialSpinner) findViewById(R.id.time_to_alert_contact);
+        ArrayAdapter<String> adapterAlertContact = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,timesToAlert);
+        dropdownTimeToAlertContact.setAdapter(adapterAlertContact);
+
 
     }
 
@@ -119,13 +122,14 @@ public class EventActivity extends AppCompatActivity {
                         eventData.put("year", year);
                         eventData.put("month", monthOfYear);
                         eventData.put("day", dayOfMonth);
-                        dateButton.setText("Date:" + dayOfMonth + "/" + monthOfYear + "/" + year);
+                        dateButton.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
                     }
                 },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
+        dpd.setAccentColor(getResources().getColor(R.color.colorPrimary));
         dpd.show(getFragmentManager(), "Datepickerdialog");
     }
 
@@ -137,10 +141,11 @@ public class EventActivity extends AppCompatActivity {
                                                                     String time = "You picked the following time: " + hourOfDay + "h" + minute + "m" + second;
                                                                     eventData.put("hour", hourOfDay);
                                                                     eventData.put("minute", minute);
-                                                                    timeButton.setText("Time:" + hourOfDay + ":" + minute);
+                                                                    timeButton.setText(hourOfDay + ":" + minute);
                                                                 }
                                                             }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         );
+        dpd.setAccentColor(getResources().getColor(R.color.colorPrimary));
         dpd.show(getFragmentManager(), "Timepickerdialog");
     }
 

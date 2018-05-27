@@ -4,7 +4,6 @@
     <string name="settings_activity">Settings</string>
 
 
-
     <string-array name="countries_array">
         <item>Afghanistan</item>
         <item>Albania</item>

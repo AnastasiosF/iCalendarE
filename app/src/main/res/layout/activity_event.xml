@@ -35,24 +35,44 @@
                     app:met_underlineColor="#003587"
                     app:met_floatingLabelTextColor="#8805ad" />
 
+
                 <Button
                     android:id="@+id/date_button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80sp"
                     android:layout_margin="10sp"
-                    android:text="Date"
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+                    android:text="Date of event"
+                    android:background="@color/colorPrimary"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Colored" />
 
                 <Button
                     android:id="@+id/time_button"
                     android:layout_width="match_parent"
+                    android:layout_height="80sp"
+                    android:layout_margin="10sp"
+                    android:text="Time of event"
+                    android:background="@color/colorPrimary"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Colored" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/time_to_alert_user"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
-                    android:text="Time"
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+                    app:ms_multiline="false"
+                    app:ms_hint="Time before event alert YOU"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelText="Time before event to alert YOU"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_arrowColor="@color/colorPrimary"
+                    app:ms_thickness="2px"/>
 
 
-
+                <!--
                 <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/autocomplete_contacts"
@@ -63,7 +83,33 @@
                     app:met_floatingLabel="highlight"
 
                     />
+                   -->
 
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner_for_contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    app:ms_multiline="false"
+                    app:ms_hint="Participant"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelText="Participant"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_arrowColor="@color/colorPrimary"
+                    app:ms_thickness="2px" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/time_to_alert_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    app:ms_multiline="false"
+                    app:ms_hint="Time before event to alert contact"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelText="Time before event to alert contact"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_arrowColor="@color/colorPrimary"
+                    app:ms_thickness="2px"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/editText_notes"
@@ -71,22 +117,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     android:hint="Notes" />
-
-
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
-                    app:ms_multiline="false"
-                    app:ms_hint="hint"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelText="floating label"
-                    app:ms_enableFloatingLabel="true"
-                    app:ms_arrowColor="@color/colorPrimary"
-                    app:ms_thickness="2px"
-
-                    />
 
             </LinearLayout>
         </ScrollView>

@@ -162,6 +162,10 @@ public class ActionBarInit {
             }
         });
         rightBmb.addBuilder(settingsActivity);
+
+
+
+
 /*
         for (int i = 0; i < bmb.getButtonPlaceEnum().buttonNumber(); i++) {
             bmb.addBuilder(new HamButton.Builder()
