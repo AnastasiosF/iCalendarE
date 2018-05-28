@@ -1,14 +1,20 @@
 package com.example.tasos.icalendare;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,10 +35,24 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+/*
+* Permission Library : https://github.com/permissions-dispatcher/PermissionsDispatcher
+*
+* */
 
+@RuntimePermissions
 public class EventActivity extends AppCompatActivity {
 
+
     final int READ_CONTACT_PERMISSION_REQUEST_CODE = 76;
+
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
 
     WeekViewEvent event;
     Button dateButton;
@@ -43,6 +63,7 @@ public class EventActivity extends AppCompatActivity {
     Spinner dropdown;
     Spinner dropdownToAlertUser;
     Spinner dropdownTimeToAlertContact;
+    Contacts contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +75,7 @@ public class EventActivity extends AppCompatActivity {
         mActionBar.setTitle("New Event");
         ActionBarInit actionBarInit = new ActionBarInit(mActionBar, getBaseContext());
         actionBarInit.initActionBar();
-
-        //elegxos dikaiwmatwn
-        permissionsCheck();
+        //
 
         eventData = new HashMap();
 
@@ -89,21 +108,29 @@ public class EventActivity extends AppCompatActivity {
         autoCompleteTextView.setAdapter(adapter);
         */
 
-        //Spinner for contacts
-        Contacts contacts = new Contacts(getBaseContext());
-        dropdown = (MaterialSpinner) findViewById(R.id.spinner_for_contacts);
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contacts.getContactArrayList());
-        dropdown.setAdapter(adapter1);
 
+
+        //Spinner for contacts
+        /*
+        Trexw thn kainoyrgia me8odo pou dimiourgei h biblio8iki PermissionDispatcher
+        Anti na treksw thn loadContacts(); otan 8elw na treksei me dikaiwmata!!!!
+        */
+        EventActivityPermissionsDispatcher.loadContactsWithPermissionCheck(this);
+        if(contacts!=null){
+            dropdown = (MaterialSpinner) findViewById(R.id.spinner_for_contacts);
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contacts.getContactArrayList());
+            dropdown.setAdapter(adapter1);
+        }
 
         //Values of periods
         String[] timesToAlert = getResources().getStringArray(R.array.periods_to_alert);
+
+
 
         //Spinner to alert the USER
         dropdownToAlertUser =  (MaterialSpinner) findViewById(R.id.time_to_alert_user);
         ArrayAdapter<String> adapterAlertUser = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,timesToAlert);
         dropdownToAlertUser.setAdapter(adapterAlertUser);
-
 
         //Spinner to alert the Contact
         dropdownTimeToAlertContact =(MaterialSpinner) findViewById(R.id.time_to_alert_contact);
@@ -149,36 +176,40 @@ public class EventActivity extends AppCompatActivity {
         dpd.show(getFragmentManager(), "Timepickerdialog");
     }
 
-    public void permissionsCheck(){
-                // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_CONTACTS)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                android.support.v4.app.ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        READ_CONTACT_PERMISSION_REQUEST_CODE);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-            // Permission has already been granted
-        }
-
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        EventActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+    //H me8odos poy 8elw na exei dikaiwmata
+    @NeedsPermission({Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS})
+    public void loadContacts(){
+        contacts = new Contacts(getBaseContext());
     }
 
+    @OnShowRationale({Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS})
+    void showRationaleForContacts(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.contact_permission_message)
+                .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())//proxwraei kai ektelei thn me8odo pou
+                .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void onContactsDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    /*
+    @OnNeverAskAgain(Manifest.permission.READ_CONTACTS)
+    protected void showNeverAskForCamera() {
+        Toast.makeText(this, "OnNeverAskAgain for camera", Toast.LENGTH_SHORT).show();
+    }
+     */
 
 
 

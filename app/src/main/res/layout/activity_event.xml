@@ -35,6 +35,19 @@
                     app:met_underlineColor="#003587"
                     app:met_floatingLabelTextColor="#8805ad" />
 
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner_for_typeEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    app:ms_multiline="false"
+                    app:ms_hint="Participant"
+                    app:ms_arrowSize="16dp"
+                    app:ms_floatingLabelText="Participant"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_arrowColor="@color/colorPrimary"
+                    app:ms_thickness="2px" />
+
 
                 <Button
                     android:id="@+id/date_button"

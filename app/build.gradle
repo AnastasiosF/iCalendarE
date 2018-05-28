@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -37,6 +41,13 @@ dependencies {
     implementation 'com.github.ganfra:material-spinner:2.0.0'
 
     implementation 'com.roomorama:caldroid:3.0.1'
+
+
+    implementation("com.github.hotchemi:permissionsdispatcher:3.2.0") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        //exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.2.0"
 
 
 
