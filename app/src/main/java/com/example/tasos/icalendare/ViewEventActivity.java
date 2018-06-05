@@ -1,32 +1,27 @@
 package com.example.tasos.icalendare;
 
 import android.Manifest;
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.alamkanak.weekview.WeekViewEvent;
-import com.example.tasos.icalendare.database.Contact;
 import com.example.tasos.icalendare.database.Contacts;
-import com.example.tasos.icalendare.database.ICalendarDatabase;
-import com.example.tasos.icalendare.database.TypeOfEvent;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import permissions.dispatcher.NeedsPermission;
@@ -34,54 +29,51 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
-/*
-* Permission Library : https://github.com/permissions-dispatcher/PermissionsDispatcher
-*
-* */
+
 
 @RuntimePermissions
-public class EventActivity extends AppCompatActivity {
+public class ViewEventActivity extends AppCompatActivity {
 
+    String title;
+    String type;
+    String startDate;
+    String endDate;
+    String timeToAlert;
+    String repeat;
+    String notes;
+    String Participant;
+    String timeBefSendMes;
 
-    final int READ_CONTACT_PERMISSION_REQUEST_CODE = 76;
-
-    private static final int PERMISSION_REQUEST_CODE = 200;
-
-    private ICalendarDatabase calendarDatabase;
-    private static final String DATABASE_NAME = "icalendar_database";
-
-
-
-    WeekViewEvent event;
     Button dateButton;
     Button timeButton;
     HashMap eventData;
     MaterialEditText editTextMail;
     MaterialAutoCompleteTextView autoCompleteTextView;
     Spinner dropdownContacts;
-    Spinner dropdownEventTypes;
     Spinner dropdownToAlertUser;
     Spinner dropdownTimeToAlertContact;
     Contacts contacts;
 
-    ArrayList<String> typesOfEventsString;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_view_event);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Title of Event");
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_event_white_24dp);
 
-        //Arxikopoihsi ths ActioBar bilio8ikh
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setTitle(R.string.new_event);
-        ActionBarInit actionBarInit = new ActionBarInit(mActionBar, getBaseContext());
-        actionBarInit.initActionBar();
-        //
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_edit_grey_24dp);
+        fab.setBackgroundColor(getResources().getColor(R.color.fab_background));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-        eventData = new HashMap();
-
-        //editTextMail = findViewById(R.id.editText_email);
-        //editTextMail.setError("Use a valid E-mail adress");
 
         dateButton = findViewById(R.id.date_button);
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -98,58 +90,21 @@ public class EventActivity extends AppCompatActivity {
                 emfanisiEpilogisWras();
             }
         });
-        /*
-        //Symmetexontes Aytomath symplhrwsh
-        // Get a reference to the AutoCompleteTextView in the layout
-        autoCompleteTextView = findViewById(R.id.autocomplete_contacts);
-
-        // Create the adapter and set it to the AutoCompleteTextView
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts.getContactArrayList());
-        autoCompleteTextView.setAdapter(adapter);
-        */
 
 
-
-        //Spinner for contacts
-        /*
-        Trexw thn kainoyrgia me8odo pou dimiourgei h biblio8iki PermissionDispatcher
-        Anti na treksw thn loadContacts(); otan 8elw na treksei me dikaiwmata!!!!
-
-        */
-        calendarDatabase = Room.databaseBuilder(getApplicationContext(),ICalendarDatabase.class, DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build();
-
-        EventActivityPermissionsDispatcher.loadContactsWithPermissionCheck(this);//arxikopoihsh tou Contacts
-        calendarDatabase.contactDao().insertMulti(contacts.getContactList());
-
-        List<Contact> contactsInArrayList = calendarDatabase.contactDao().getAllContacts();
-        dropdownContacts = (MaterialSpinner) findViewById(R.id.spinner_for_contacts);
-
-        ArrayAdapter<Contact> adapter1 = new ArrayAdapter<Contact>(this, android.R.layout.simple_spinner_dropdown_item,contactsInArrayList );
-        dropdownContacts.setAdapter(adapter1);
-
-
+        ViewEventActivityPermissionsDispatcher.loadContactsWithPermissionCheck(this);
 
         //Values of periods
         String[] timesToAlert = getResources().getStringArray(R.array.periods_to_alert);
 
         //Values for types
-        //String[] typesOfEvent = getResources().getStringArray(R.array.type_of_event);
+        String[] typesOfEvent = getResources().getStringArray(R.array.type_of_event);
 
 
         //Spinner for Type Of Event
-        typesOfEventsString = new ArrayList<>();
-        List<TypeOfEvent> typeOfEventsList = calendarDatabase.typeOfEventDao().getAllTypeOfEvents();
-        for(int i=0;i<typeOfEventsList.size();i++){
-            typesOfEventsString.add(typeOfEventsList.get(i).getTitle());
-            Toast.makeText(getBaseContext(),typesOfEventsString.get(i),Toast.LENGTH_SHORT).show();
-
-        }
-        dropdownEventTypes = (MaterialSpinner) findViewById(R.id.spinner_for_typeEvent);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesOfEventsString);
-        dropdownEventTypes.setAdapter(adapter);
+        dropdownContacts = (MaterialSpinner) findViewById(R.id.spinner_for_typeEvent);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typesOfEvent);
+        dropdownContacts.setAdapter(adapter1);
 
 
 
@@ -206,12 +161,15 @@ public class EventActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
-        EventActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        ViewEventActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
     //H me8odos poy 8elw na exei dikaiwmata
     @NeedsPermission({Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS})
     public void loadContacts(){
         contacts = new Contacts(getBaseContext());
+        dropdownContacts = (MaterialSpinner) findViewById(R.id.spinner_for_contacts);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contacts.getContactArrayList());
+        dropdownContacts.setAdapter(adapter1);
     }
 
     @OnShowRationale({Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS})
@@ -229,15 +187,5 @@ public class EventActivity extends AppCompatActivity {
         // or disabling certain functionality
         Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show();
     }
-
-    /*
-    @OnNeverAskAgain(Manifest.permission.READ_CONTACTS)
-    protected void showNeverAskForCamera() {
-        Toast.makeText(this, "OnNeverAskAgain for camera", Toast.LENGTH_SHORT).show();
-    }
-     */
-
-
-
 
 }

@@ -31,7 +31,7 @@
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="30"
                     app:met_primaryColor="@color/colorPrimary"
-                    app:met_textColorHint="@color/accent"
+                    app:met_textColorHint="@color/colorAccent"
                     app:met_underlineColor="#003587"
                     app:met_floatingLabelTextColor="#8805ad" />
 
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     app:ms_multiline="false"
-                    app:ms_hint="Participant"
+                    app:ms_hint="Type of event"
                     app:ms_arrowSize="16dp"
                     app:ms_floatingLabelText="Participant"
                     app:ms_enableFloatingLabel="true"

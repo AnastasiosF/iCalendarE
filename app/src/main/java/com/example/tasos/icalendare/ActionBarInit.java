@@ -13,8 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.tasos.icalendare.Settings.SettingsActivity;
 import com.nightonke.boommenu.Animation.BoomEnum;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -70,8 +70,8 @@ public class ActionBarInit {
 
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
-        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_3);
-        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_3);
+        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
 
         rightBmb.setBoomEnum(BoomEnum.PARABOLA_2);
         rightBmb.setDuration(XRONOS_EKTELESIS_EFE);
@@ -94,7 +94,7 @@ public class ActionBarInit {
         Random rand = new Random();
         HamButton.Builder mainActivity = new HamButton.Builder()
                 .shadowEffect(true)
-                .normalText("Home")
+                .normalText(context.getResources().getString(R.string.main_activity))
                 .normalImageRes(R.drawable.ic_home_black_24dp)
                 .normalColor(Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)))
                 .listener(new OnBMClickListener() {
@@ -139,9 +139,33 @@ public class ActionBarInit {
         });
         rightBmb.addBuilder(eventActivity);
 
+        HamButton.Builder viewEventActivity = new HamButton.Builder();
+        viewEventActivity.shadowEffect(true);
+        viewEventActivity.normalText("View event");
+        viewEventActivity.normalImageRes(R.drawable.ic_event_black_24dp);
+        viewEventActivity.normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
+        viewEventActivity.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                final Intent i = new Intent(context, ViewEventActivity.class);
+
+                //Delay gia na paizei swsta to efe
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // yourMethod();
+                        context.startActivity(i);
+                    }
+                }, DELAY_GIA_NA_KSEKINHSH_ACTIVITY);
+
+            }
+        });
+        rightBmb.addBuilder(viewEventActivity);
+
         HamButton.Builder settingsActivity = new HamButton.Builder();
         settingsActivity.shadowEffect(true);
-        settingsActivity.normalText("Settings");
+        settingsActivity.normalText(context.getResources().getString(R.string.settings_activity));
         settingsActivity.normalImageRes(R.drawable.ic_settings_black_24dp);
         settingsActivity.normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
         settingsActivity.listener(new OnBMClickListener() {

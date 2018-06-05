@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">iCalendarE</string>
+    <string name="main_activity">Αρχική</string>
+    <string name="settings_activity">Ρυθμίσεις</string>
+    <string name="contact_permission_message">Χρειαζόμαστε πρόσβαση στις επαφές σου!</string>
+    <string name="button_allow">Επιτρέπεται</string>
+    <string name="button_deny">Απαγορεύεται</string>
+    <string name="permission_contacts_denied">Πρόσβαση στις επαφές απαγορεύτηκε</string>
+    <string name="action_settings">Ρυθμίσεις</string>
+</resources>

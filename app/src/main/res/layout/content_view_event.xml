@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ViewEventActivity"
+    tools:showIn="@layout/activity_view_event">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:hint="Title of the event"
+                app:met_baseColor="#000000"
+                app:met_errorColor="@color/color_error"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="30"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_textColorHint="@color/colorAccent"
+                app:met_underlineColor="#003587"
+                app:met_floatingLabelTextColor="#8805ad"
+                />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_for_typeEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                app:ms_multiline="false"
+                app:ms_hint="Type of event"
+                app:ms_arrowSize="16dp"
+                app:ms_floatingLabelText="Participant"
+                app:ms_enableFloatingLabel="true"
+                app:ms_arrowColor="@color/colorPrimary"
+                app:ms_thickness="2px" />
+
+
+            <Button
+                android:id="@+id/date_button"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_margin="10sp"
+                android:text="Date of event"
+                android:background="@color/colorPrimary"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                style="@style/Widget.AppCompat.Button.Colored" />
+
+            <Button
+                android:id="@+id/time_button"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_margin="10sp"
+                android:text="Time of event"
+                android:background="@color/colorPrimary"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                style="@style/Widget.AppCompat.Button.Colored" />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/time_to_alert_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                app:ms_multiline="false"
+                app:ms_hint="Time before event alert YOU"
+                app:ms_arrowSize="16dp"
+                app:ms_floatingLabelText="Time before event to alert YOU"
+                app:ms_enableFloatingLabel="true"
+                app:ms_arrowColor="@color/colorPrimary"
+                app:ms_thickness="2px"/>
+
+
+            <!--
+            <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/autocomplete_contacts"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:hint="Contacts"
+                app:met_floatingLabel="highlight"
+
+                />
+               -->
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_for_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                app:ms_multiline="false"
+                app:ms_hint="Participant"
+                app:ms_arrowSize="16dp"
+                app:ms_floatingLabelText="Participant"
+                app:ms_enableFloatingLabel="true"
+                app:ms_arrowColor="@color/colorPrimary"
+                app:ms_thickness="2px" />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/time_to_alert_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                app:ms_multiline="false"
+                app:ms_hint="Time before event to alert contact"
+                app:ms_arrowSize="16dp"
+                app:ms_floatingLabelText="Time before event to alert contact"
+                app:ms_enableFloatingLabel="true"
+                app:ms_arrowColor="@color/colorPrimary"
+                app:ms_thickness="2px"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/editText_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:hint="Notes" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.constraint.ConstraintLayout>

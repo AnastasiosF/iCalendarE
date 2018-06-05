@@ -1,20 +1,23 @@
 package com.example.tasos.icalendare;
 
 
+import android.arch.persistence.room.Room;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
-import com.rengwuxian.materialedittext.MaterialEditText;
+import com.example.tasos.icalendare.database.ICalendarDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 
+
 public class MainActivity extends AppCompatActivity {
+    ICalendarDatabase iCalendarDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,27 @@ public class MainActivity extends AppCompatActivity {
         ActionBar mActionBar = getSupportActionBar();
         ActionBarInit actionBarInit = new ActionBarInit(mActionBar, getBaseContext());
         actionBarInit.initActionBar();
+
+        //Dimiourgia Bashs
+
+        iCalendarDatabase = Room.databaseBuilder(getApplicationContext(),ICalendarDatabase.class,"iCalandarDatabase").allowMainThreadQueries().build();
+        //iCalendarDatabase.typeOfEventDao().insert(new TypeOfEvent("Τιτλος",15,"25"));
+        /*
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // yourMethod();
+            }
+        }, 100);
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+            }
+        }) .start();
+        */
+
 
         List<EventDay> events = new ArrayList<>();
 

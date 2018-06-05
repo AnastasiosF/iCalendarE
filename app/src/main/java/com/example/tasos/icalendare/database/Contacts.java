@@ -1,4 +1,4 @@
-package com.example.tasos.icalendare;
+package com.example.tasos.icalendare.database;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -7,12 +7,17 @@ import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 /**Epistrefei oles tis epafes*/
 
 public class Contacts {
+    List<Contact> contactList = new LinkedList<>();
     ArrayList<String> contactArrayList = new ArrayList<>();
     HashMap<String,String> contactHashMap = new HashMap<>();
     Context context;
+    Contact contact;
 
     public Contacts(Context context) {
         ContentResolver cr = context.getContentResolver();
@@ -29,11 +34,17 @@ public class Contacts {
                             null,
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
                             new String[]{id}, null);
+                    int i=0;
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         //Toast.makeText(NativeContentProvider.this, "Name: " + name + ", Phone No: " + phoneNo, Toast.LENGTH_SHORT).show();
                         contactArrayList.add(name+" "+phoneNo);
                         contactHashMap.put(name,phoneNo);
+                        contact = new Contact();
+                        contact.setName(name);
+                        contact.setPhone(phoneNo);
+                        contactList.add(contact);
+                        i++;
                     }
                     pCur.close();
                 }
@@ -47,5 +58,9 @@ public class Contacts {
 
     public HashMap<String, String> getContactHashMap() {
         return contactHashMap;
+    }
+
+    public List<Contact> getContactList() {
+        return contactList;
     }
 }

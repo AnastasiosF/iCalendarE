@@ -6,16 +6,18 @@
     <string name="button_allow">allow</string>
     <string name="button_deny">deny</string>
     <string name="permission_contacts_denied">Contact permission denied!</string>
+    <string name="new_event">New event</string>
+    <string name="title">Title</string>
+    <string name="price">price</string>
+    <string name="duration">duration</string>
+    <string name="add_new_event_type">Add new event type</string>
 
-    <string-array name="countries_array">
-        <item>Afghanistan</item>
-        <item>Albania</item>
-        <item>Algeria</item>
-        <item>American Samoa</item>
-        <item>Andorra</item>
-        <item>Angola</item>
-        <item>Anguilla</item>
-        <item>Antarctica</item>
+
+    <string-array name="type_of_event">
+        <item>Type 1</item>
+        <item>Type 2</item>
+        <item>Type 3</item>
+        <item>Type 4</item>
     </string-array>
 
     <string-array name="periods_to_alert">
@@ -27,6 +29,10 @@
         <item>5hour</item>
         <item>6hour</item>
     </string-array>
+    <string name="title_activity_login">Sign in</string>
+
+
+    <string name="title_activity_view_event">ViewEventActivity</string>
 
 
 </resources>
