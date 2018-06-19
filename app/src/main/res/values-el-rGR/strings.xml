@@ -8,4 +8,9 @@
     <string name="button_deny">Απαγορεύεται</string>
     <string name="permission_contacts_denied">Πρόσβαση στις επαφές απαγορεύτηκε</string>
     <string name="action_settings">Ρυθμίσεις</string>
+    <string name="add_new_event_type">Προσθήκη συμβάντος</string>
+    <string name="price">τιμή</string>
+    <string name="duration">διάρκεια</string>
+    <string name="title">Τίτλος</string>
+    <string name="new_event">Νέο συμβάν</string>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventActivity">
+    tools:context=".NewEvent.AddEventActivity">
 
 
     <LinearLayout
@@ -22,6 +22,7 @@
                 android:orientation="vertical" >
 
                 <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/event_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
@@ -43,7 +44,7 @@
                     app:ms_multiline="false"
                     app:ms_hint="Type of event"
                     app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelText="Participant"
+                    app:ms_floatingLabelText="Type of event"
                     app:ms_enableFloatingLabel="true"
                     app:ms_arrowColor="@color/colorPrimary"
                     app:ms_thickness="2px" />
@@ -125,11 +126,22 @@
                     app:ms_thickness="2px"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/editText_notes"
+                    android:id="@+id/event_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10sp"
                     android:hint="Notes" />
+
+                <Button
+                    android:id="@+id/add_event_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="80sp"
+                    android:layout_margin="10sp"
+                    android:text="@string/add_event"
+                    android:background="@color/colorPrimary"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Colored" />
 
             </LinearLayout>
         </ScrollView>

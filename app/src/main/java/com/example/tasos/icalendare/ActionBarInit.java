@@ -1,9 +1,8 @@
 package com.example.tasos.icalendare;
 /**
  * Einai upeu8unh gia na topot8etisi kai ru8mish thn ActionBar se ka8e kainourgia activity
- *
- *
- * */
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.tasos.icalendare.NewEvent.AddEventActivity;
 import com.example.tasos.icalendare.Settings.SettingsActivity;
+import com.example.tasos.icalendare.ViewEvent.ViewEventActivity;
 import com.nightonke.boommenu.Animation.BoomEnum;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -30,8 +31,8 @@ public class ActionBarInit {
 
     ActionBar mActionBar;
     Context context;
-    int DELAY_GIA_NA_KSEKINHSH_ACTIVITY = 770;
-    int XRONOS_EKTELESIS_EFE = 750;
+    int DELAY_GIA_NA_KSEKINHSH_ACTIVITY = 200;
+    int XRONOS_EKTELESIS_EFE = 100;
 
     public ActionBarInit(ActionBar mActionBar, Context context) {
         this.mActionBar = mActionBar;
@@ -52,11 +53,10 @@ public class ActionBarInit {
         mTitleTextView.setText(R.string.app_name);
         mActionBar.setCustomView(actionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
-        ((Toolbar) actionBar.getParent()).setContentInsetsAbsolute(0,0);
+        ((Toolbar) actionBar.getParent()).setContentInsetsAbsolute(0, 0);
 
         BoomMenuButton leftBmb = (BoomMenuButton) actionBar.findViewById(R.id.action_bar_left_bmb);
         BoomMenuButton rightBmb = (BoomMenuButton) actionBar.findViewById(R.id.action_bar_right_bmb);
-
 
 
         leftBmb.setButtonEnum(ButtonEnum.TextOutsideCircle);
@@ -66,7 +66,6 @@ public class ActionBarInit {
         leftBmb.setDuration(XRONOS_EKTELESIS_EFE);
         for (int i = 0; i < leftBmb.getPiecePlaceEnum().pieceNumber(); i++)
             leftBmb.addBuilder(new TextOutsideCircleButton.Builder().normalImageRes(R.drawable.ic_attachment_black_24dp));
-
 
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
@@ -96,11 +95,11 @@ public class ActionBarInit {
                 .shadowEffect(true)
                 .normalText(context.getResources().getString(R.string.main_activity))
                 .normalImageRes(R.drawable.ic_home_black_24dp)
-                .normalColor(Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)))
+                .normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)))
                 .listener(new OnBMClickListener() {
                     @Override
                     public void onBoomButtonClick(int index) {
-                        final Intent i =new Intent(context,MainActivity.class);
+                        final Intent i = new Intent(context, MainActivity.class);
                         //Delay gia na paizei swsta to efe
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -123,7 +122,7 @@ public class ActionBarInit {
         eventActivity.listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                final Intent i = new Intent(context, EventActivity.class);
+                final Intent i = new Intent(context, AddEventActivity.class);
 
                 //Delay gia na paizei swsta to efe
 
@@ -173,6 +172,7 @@ public class ActionBarInit {
             public void onBoomButtonClick(int index) {
                 final Intent i = new Intent(context, SettingsActivity.class);
 
+
                 //Delay gia na paizei swsta to efe
 
                 Handler handler = new Handler();
@@ -180,6 +180,7 @@ public class ActionBarInit {
                     public void run() {
                         // yourMethod();
                         context.startActivity(i);
+
                     }
                 }, DELAY_GIA_NA_KSEKINHSH_ACTIVITY);
 
