@@ -5,20 +5,47 @@ import android.Manifest
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.widget.CalendarView
 import android.widget.Toast
-import com.applandeo.materialcalendarview.CalendarView
-import com.applandeo.materialcalendarview.EventDay
 import com.example.tasos.icalendare.Database.Contact
+import com.example.tasos.icalendare.Database.Events
 import com.example.tasos.icalendare.Database.ICalendarDatabase
 import com.example.tasos.icalendare.Providers.ContactsProvider
+import com.github.tibolte.agendacalendarview.AgendaCalendarView
+import com.github.tibolte.agendacalendarview.CalendarManager
 import permissions.dispatcher.*
 import java.util.*
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
+import com.github.tibolte.agendacalendarview.models.WeekItem
+import com.github.tibolte.agendacalendarview.models.DayItem
+import android.R.attr.maxDate
+import android.R.attr.minDate
+import com.github.tibolte.agendacalendarview.CalendarPickerController
+import com.github.tibolte.agendacalendarview.models.CalendarEvent
+import android.support.v4.content.ContextCompat
+import android.util.Log
+import com.example.tasos.icalendare.Calendar.DrawableCalendarEvent
+import com.example.tasos.icalendare.Calendar.DrawableEventRenderer
+import com.example.tasos.icalendare.Calendar.EventsToDrawableCalendarEventADAPTER
+import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
+import android.R.attr.maxDate
+import android.R.attr.minDate
+import android.os.Handler
 
-//TODO: ΝΑ ΒΑΖΩ ΤΙΣ ΕΠΑΦΕΣ ΣΤΗΝ ΒΑΣΗ ΜΟΛΙΣ ΞΕΚΙΝΑΕΙ Η ΕΦΑΡΜΟΓΗ
+
 @RuntimePermissions
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),CalendarPickerController {
 
-    internal var contactsList: List<Contact>? = null
+
+    private var contactsList: List<Contact>? = null
+
+
+    private val LOG_TAG = MainActivity::class.java.simpleName
+
+
+    var agendaCalendarView: AgendaCalendarView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         //Arxikopoish Bashs
         initDatabase()
 
+        //Arxikopoihsh Calendar
+        initCalendar()
+
     }
 
 
@@ -43,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     //H me8odos poy 8elw na exei dikaiwmata
     @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    fun initDatabase() {
+    private fun initDatabase() {
 
         //Pairnw tis epafes apo ton provider tou kinhtou
         val contactsProvider = ContactsProvider(applicationContext)
@@ -51,7 +81,9 @@ class MainActivity : AppCompatActivity() {
 
         contactsList = contactsProvider.getContactList()
         for (i in contactsList!!){
-            ICalendarDatabase.getInstance(this@MainActivity).contactDao().upsert(i)
+            ICalendarDatabase.getInstance(this@MainActivity)
+                    .contactDao()
+                    .upsert(i)
         }
 
 
@@ -64,6 +96,7 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this@MainActivity, "Cant find contacts!", Toast.LENGTH_LONG)
         }
+
 
 
     }
@@ -86,35 +119,64 @@ class MainActivity : AppCompatActivity() {
 
 
     fun initCalendar() {
-        val events = ArrayList<EventDay>()
+        val events = ArrayList<Events>()
 
-        val calendarView = findViewById<CalendarView>(R.id.calendarView)
+        agendaCalendarView = findViewById(R.id.agenda_calendar_view)
 
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_MONTH, -5)
+        // minimum and maximum date of our calendar
+        // 2 month behind, one year ahead, example: March 2015 <-> May 2015 <-> May 2016
+        val minDate = Calendar.getInstance()
+        val maxDate = Calendar.getInstance()
 
-        events.add(EventDay(calendar, R.drawable.ic_event_black_24dp))
+        minDate.add(Calendar.MONTH, -2)
+        minDate.set(Calendar.DAY_OF_MONTH, 1)
+        maxDate.add(Calendar.MONDAY, 2)
 
-        events.add(EventDay(calendar, R.drawable.ic_event_black_24dp))
+        var eventsDatabase:List<Events>
+        eventsDatabase = ICalendarDatabase.getInstance(applicationContext).eventsDao().allEvents
 
-        val calendar1 = Calendar.getInstance()
-        calendar1.add(Calendar.DAY_OF_MONTH, 0)
-        events.add(EventDay(calendar1, R.drawable.ic_event_black_24dp))
+        var eventList:List<DrawableCalendarEvent>
+        eventList = ArrayList()
 
-        val calendar2 = Calendar.getInstance()
-        calendar2.add(Calendar.DAY_OF_MONTH, 5)
-        events.add(EventDay(calendar2, R.drawable.ic_event_black_24dp))
+        for (i in eventsDatabase){
+            eventList.add(EventsToDrawableCalendarEventADAPTER.adaptToDrawableCalendarEvent(i,applicationContext))
+        }
 
-        val min = Calendar.getInstance()
-        min.add(Calendar.MONTH, -2)
 
-        val max = Calendar.getInstance()
-        max.add(Calendar.MONTH, 2)
 
-        calendarView.setMinimumDate(min)
-        calendarView.setMaximumDate(max)
+        // Sync way
 
-        calendarView.setEvents(events)
+        //agendaCalendarView!!.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+        //agendaCalendarView!!.addEventRenderer( DrawableEventRenderer());
+
+        //Async way
+        Handler().postDelayed(Runnable {
+            agendaCalendarView!!.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+            agendaCalendarView!!.addEventRenderer( DrawableEventRenderer());
+
+            val calendarManager = CalendarManager.getInstance(applicationContext)
+            calendarManager.buildCal(minDate, maxDate, Locale.getDefault())
+            calendarManager.loadEvents(eventList)
+
+        }, 100)
+
+
+
+    }
+
+
+    override fun onDaySelected(dayItem: DayItem?) {
+        Log.d(LOG_TAG, String.format("Selected day: %s", dayItem));
+    }
+
+    override fun onScrollToDate(calendar: Calendar?) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar()?.setTitle(calendar?.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        }
+    }
+
+    override fun onEventSelected(event: CalendarEvent?) {
+        Log.d(LOG_TAG, String.format("Selected event: %s", event));
     }
 
 

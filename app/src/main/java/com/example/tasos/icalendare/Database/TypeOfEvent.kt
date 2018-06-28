@@ -7,5 +7,5 @@ import android.arch.persistence.room.PrimaryKey
 class TypeOfEvent(var title: String, var price: Float, var duration: Int) {
 
     @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
+    var uid: Int? = null
 }

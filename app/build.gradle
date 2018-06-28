@@ -67,7 +67,12 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+    //Debug database
+    // debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+
+    //CalendarView
+    implementation 'com.github.tibolte:agendacalendarview:1.0.4'
+
 
 
 }

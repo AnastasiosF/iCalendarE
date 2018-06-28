@@ -12,6 +12,9 @@ interface TypeOfEventDao {
     @get:Query("SELECT * from event_type ORDER BY title ASC")
     val allTypeOfEvents: List<TypeOfEvent>
 
+    @Query("SELECT title FROM event_type WHERE uid LIKE :id")
+    fun eventsList(id: Int): List<String>
+
     @Insert
     fun insert(typeOfEvent: TypeOfEvent)
 
@@ -23,4 +26,6 @@ interface TypeOfEventDao {
 
     @Query("DELETE FROM event_type ")
     fun delete()
+
+
 }

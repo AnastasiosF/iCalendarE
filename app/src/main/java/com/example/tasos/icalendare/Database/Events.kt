@@ -3,20 +3,32 @@ package com.example.tasos.icalendare.Database
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.content.Context
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
+import java.util.*
 
 @Entity(tableName = "events")
-class Events(@field:PrimaryKey(autoGenerate = true)
-             var eventsID: Long?,
-             var contactName_ID: String,
-             var typeOfEvent_ID: Int?,
-             var title: String,
-             var date: String,
-             var time: String,
-             var timeToAlerUser: String,
-             var timeToAlertParticipant: String,
-             var notes: String)
 
+data class Events(
+        @PrimaryKey(autoGenerate = true)
+        var id: Long? =null,
+        var title: String,
+        var contactName_ID: String,
+        var typeOfEvent_ID: Int,
+        var timeToAlerUser: String?,
+        var timeToAlertParticipant: String?,
+        var dateStart: Long?,
+        var dateEnd: Long?,
+        var location: String?,
+        var allDay: Boolean,
+        var duration: String="",
+        var description:String="",
+        var color:Int= Color.LTGRAY)
 {
-    constructor():this(null,"",null,"","","",
-            "","","")
+
+
+
+
 }

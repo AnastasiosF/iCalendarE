@@ -14,19 +14,12 @@ import android.widget.Spinner
 import android.widget.Toast
 
 import com.example.tasos.icalendare.ActionBarInit
-import com.example.tasos.icalendare.Database.Contact
-import com.example.tasos.icalendare.Database.Events
-import com.example.tasos.icalendare.Database.ICalendarDatabase
-import com.example.tasos.icalendare.Database.TypeOfEvent
+import com.example.tasos.icalendare.Database.*
 import com.example.tasos.icalendare.Providers.ContactsProvider
 import com.example.tasos.icalendare.R
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
-
-import java.util.ArrayList
-import java.util.Calendar
-import java.util.HashMap
 
 import fr.ganfra.materialspinner.MaterialSpinner
 import permissions.dispatcher.NeedsPermission
@@ -34,6 +27,9 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.sql.Time
+import java.util.*
+import kotlin.collections.ArrayList
 
 /*
  * Permission Library : https://github.com/permissions-dispatcher/PermissionsDispatcher
@@ -64,8 +60,31 @@ class AddEventActivity : AppCompatActivity() {
     internal var typeOfEventInArrayList = ArrayList<String>()
 
 
+    //Data For Date/Time Picker
+    var year:Int = 0
+    var month:Int = 0
+    var day:Int = 0
+    var hour:Int = 0
+    var minute:Int = 0
+    var second:Int = 0
+
+
+    //Data From Forms
+    var title:String = ""
+    var description:String = ""
+    var contactName_ID:String = ""
+    var typeOfEvent_ID:Int = 0
+    var timeToAlertUser:String =""
+    var timeToAlertParticipant = ""
+    var allDay:Int = 0
+    var duration = null
+    var color:Int =0
+    lateinit var startDate:Calendar
+    lateinit var endDate:Calendar
+
+
     //TO KAINOURGIO EVENT POU 8A MPEI STHN BASH!!!!
-    internal lateinit var newEvent: Events
+    lateinit var newEvent: Events
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,13 +95,24 @@ class AddEventActivity : AppCompatActivity() {
         mActionBar!!.setTitle(R.string.new_event)
         val actionBarInit = ActionBarInit(mActionBar, baseContext)
         actionBarInit.initActionBar()
-        //
 
-        //eventData = HashMap()
+        newEvent = Events(null,
+                "" ,
+                "",
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false
+                ,""
+                ,""
+                )
 
-        newEvent = Events(-1, "Αλινάκι", -1,
-                "", "", "", "",
-                "", "")
+        startDate = Calendar.getInstance()
+        endDate = Calendar.getInstance()
+
 
         dateButton = findViewById(R.id.date_button)
         dateButton.setOnClickListener {
@@ -120,10 +150,8 @@ class AddEventActivity : AppCompatActivity() {
         Thread(DimiourgiaSpinner()).start()
 
         editTextTitle = findViewById(R.id.event_title)
-        newEvent.title = editTextTitle.text.toString()
 
         editTextNotes = findViewById(R.id.event_notes)
-        newEvent.notes = editTextNotes.text.toString()
 
 
         //Values of periods
@@ -138,7 +166,7 @@ class AddEventActivity : AppCompatActivity() {
 
         dropdownToAlertUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                newEvent.timeToAlerUser = parent.getItemAtPosition(position).toString()
+                timeToAlertUser = parent.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -152,7 +180,7 @@ class AddEventActivity : AppCompatActivity() {
         dropdownTimeToAlertContact.adapter = adapterAlertContact
         dropdownTimeToAlertContact.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                newEvent.timeToAlertParticipant = parent.getItemAtPosition(position).toString()
+                timeToAlertParticipant = parent.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -165,21 +193,59 @@ class AddEventActivity : AppCompatActivity() {
         addEventButton.setOnClickListener {
             //Dimiourgv thread gia na exw prosbash sthn bash dedomenwn
             Thread(Runnable {
-                newEvent.title = editTextTitle.text.toString()
-                newEvent.notes = editTextNotes.text.toString()
 
-                Log.d("TESt DATA: ", "EVENTS ID:" + newEvent.eventsID.toString())
+
+                startDate = Calendar.getInstance()
+                startDate.set(year,month,day,hour,minute,second)
+
+                endDate = Calendar.getInstance()
+                endDate.set(year,month,day,hour+1,minute,second)
+
+                newEvent = Events(null,
+                        editTextTitle.text.toString(),
+                        dropdownContacts.selectedItem.toString(),
+                        typeOfEvent_ID,
+                        dropdownToAlertUser.selectedItem.toString(),
+                        dropdownTimeToAlertContact.selectedItem.toString(),
+                        CalendarTypeConverter.toLong(startDate),
+                        CalendarTypeConverter.toLong(endDate),
+                        "Athens",
+                        false,
+                        "",
+                        editTextNotes.text.toString())
+/*
+                newEvent.id = -1
+                newEvent.title = editTextTitle.text.toString()
+                newEvent.description = editTextNotes.text.toString()
+                newEvent.contactName_ID = dropdownContacts.selectedItem.toString()
+                newEvent.dateStart = startDate
+                newEvent.dateEnd = endDate
+                newEvent.timeToAlerUser = dropdownToAlertUser.selectedItem.toString()
+                newEvent.timeToAlertParticipant = dropdownTimeToAlertContact.selectedItem.toString()
+                newEvent.allDay = 0
+                newEvent.color = 0
+
+*/
+
+
+                Log.d("TESt DATA: ", "EVENTS ID:" + newEvent.id.toString())
                 Log.d("TESt DATA: ", "CONTACT ID:" + newEvent.contactName_ID.toString())
                 Log.d("TESt DATA: ", "TYPE OF EVENT ID:" + newEvent.typeOfEvent_ID.toString())
                 Log.d("TESt DATA: ", "TITLE:" + newEvent.title.toString())
-                Log.d("TESt DATA: ", "DATE:" + newEvent.date.toString())
-                Log.d("TESt DATA: ", "TIME:" + newEvent.time.toString())
-                Log.d("TESt DATA: ", "NOTES:" + newEvent.notes.toString())
+                Log.d("TESt DATA: ", "START_DATE:" + newEvent.dateStart.toString())
+                Log.d("TESt DATA: ", "END_DATE:" + newEvent.dateEnd.toString())
+                Log.d("TESt DATA: ", "ALLDAY:" + newEvent.allDay.toString())
+
+                //Log.d("TESt DATA: ", "TIME:" + newEvent.time.toString())
+                Log.d("TESt DATA: ", "NOTES:" + newEvent.description.toString())
                 Log.d("TESt DATA: ", "TIME TO ALERT CONTACT:" + newEvent.timeToAlertParticipant.toString())
                 Log.d("TESt DATA: ", "TIME TO ALERT USER:" + newEvent.timeToAlerUser.toString())
                 /*ICalendarDatabase.getInstance(getApplicationContext())
                                 .contactDao().delete();
 */
+
+                ICalendarDatabase.getInstance(applicationContext).eventsDao().insert(newEvent)
+
             }).start()
         }
 
@@ -191,7 +257,10 @@ class AddEventActivity : AppCompatActivity() {
         val dpd = DatePickerDialog.newInstance(
                 { view, year, monthOfYear, dayOfMonth ->
                     dateButton.text = dayOfMonth.toString() + "/" + monthOfYear + "/" + year
-                    newEvent.date = dayOfMonth.toString() + "/" + monthOfYear + "/" + year
+                    this.year = year
+                    this.month = monthOfYear
+                    this.day = dayOfMonth
+                    //startDate.set(year,monthOfYear,dayOfMonth)
                 },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
@@ -206,7 +275,10 @@ class AddEventActivity : AppCompatActivity() {
         val dpd = TimePickerDialog.newInstance({ view, hourOfDay, minute, second ->
             val time = "You picked the following time: " + hourOfDay + "h" + minute + "m" + second
             timeButton.text = hourOfDay.toString() + ":" + minute
-            newEvent.time = hourOfDay.toString() + ":" + minute
+            this.hour = hourOfDay
+            this.minute = minute
+            this.second = second
+
         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         )
         dpd.accentColor = resources.getColor(R.color.colorPrimary)
@@ -226,7 +298,7 @@ class AddEventActivity : AppCompatActivity() {
     }
 
     @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    internal fun showRationaleForContacts(request: PermissionRequest) {
+    fun showRationaleForContacts(request: PermissionRequest) {
         AlertDialog.Builder(this)
                 .setMessage(R.string.contact_permission_message)
                 .setPositiveButton(R.string.button_allow) { dialog, button -> request.proceed() }//proxwraei kai ektelei thn me8odo pou
@@ -235,7 +307,7 @@ class AddEventActivity : AppCompatActivity() {
     }
 
     @OnPermissionDenied(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    internal fun onContactsDenied() {
+    fun onContactsDenied() {
         // NOTE: Deal with a denied permission, e.g. by showing specific UI
         // or disabling certain functionality
         Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show()
@@ -260,7 +332,6 @@ class AddEventActivity : AppCompatActivity() {
             if (contactsList == null) {
 
                 Toast.makeText(this@AddEventActivity, "Cant find contacts!", Toast.LENGTH_LONG)
-
 
             }
 
@@ -288,6 +359,8 @@ class AddEventActivity : AppCompatActivity() {
             //Spinner for Type Of Event
             typeOfEventList = ICalendarDatabase.getInstance(applicationContext).typeOfEventDao().allTypeOfEvents
 
+
+
             for (i in typeOfEventList.indices) {
 
                 typeOfEventInArrayList.add(typeOfEventList[i].title)
@@ -298,6 +371,24 @@ class AddEventActivity : AppCompatActivity() {
             dropdownEventTypes = findViewById<View>(R.id.spinner_for_typeEvent) as MaterialSpinner
 
             val adapter = ArrayAdapter(this@AddEventActivity, android.R.layout.simple_spinner_dropdown_item, typeOfEventInArrayList)
+
+            dropdownEventTypes.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                    var typeOfEventsIDs: ArrayList<Int> = ArrayList()
+                    if(typeOfEventList.isNotEmpty() && position >= 0){
+                        for(i in typeOfEventList){
+                            typeOfEventsIDs.add(i.uid!!)
+                        }
+                        typeOfEvent_ID = typeOfEventsIDs[position]
+                    }
+
+                }
+            }
 
             //BAzw tous adaptores na treksoun mesa sto uiThread giati petaei exception
             this@AddEventActivity.runOnUiThread {

@@ -19,7 +19,7 @@ interface EventsDao {
     @Insert(onConflict = REPLACE)
     fun insertMulti(eventsList: List<Events>)
 
-    @Query("SELECT * FROM events WHERE eventsID LIKE :id")
+    @Query("SELECT * FROM events WHERE id LIKE :id")
     fun getEvent(id: Int): List<Events>
 
     @Query("DELETE FROM events ")

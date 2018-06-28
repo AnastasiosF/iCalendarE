@@ -7,5 +7,12 @@
     <color name="color_error">#ff1e1e</color>
     <color name="fab_background">#FFF1E8E8</color>
 
+    <color name="orange_dark">#FFE28811</color>
+    <color name="yellow">#FF9BFF04</color>
+
+    <color name="blue_dark">#FF304FFE</color>
+
+    <color name="event_background_light">#FFE5E8FA</color>
+
 
 </resources>
