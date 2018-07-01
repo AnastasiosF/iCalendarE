@@ -31,7 +31,16 @@ import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 import android.R.attr.maxDate
 import android.R.attr.minDate
+import android.content.Context
+import android.graphics.Color
 import android.os.Handler
+import android.support.v7.app.ActionBar
+import android.view.View
+import com.nightonke.boommenu.Util.setTextColor
+import com.skydoves.powermenu.MenuAnimation
+import com.skydoves.powermenu.OnMenuItemClickListener
+import com.skydoves.powermenu.PowerMenu
+import com.skydoves.powermenu.PowerMenuItem
 
 
 @RuntimePermissions
@@ -44,7 +53,11 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
     private val LOG_TAG = MainActivity::class.java.simpleName
 
 
+    val mActionBar:ActionBar? = null
+
     var agendaCalendarView: AgendaCalendarView? = null
+
+    lateinit var powerMenu:PowerMenu
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,18 +145,6 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
         minDate.set(Calendar.DAY_OF_MONTH, 1)
         maxDate.add(Calendar.MONDAY, 2)
 
-        var eventsDatabase:List<Events>
-        eventsDatabase = ICalendarDatabase.getInstance(applicationContext).eventsDao().allEvents
-
-        var eventList:List<DrawableCalendarEvent>
-        eventList = ArrayList()
-
-        for (i in eventsDatabase){
-            eventList.add(EventsToDrawableCalendarEventADAPTER.adaptToDrawableCalendarEvent(i,applicationContext))
-        }
-
-
-
         // Sync way
 
         //agendaCalendarView!!.init(eventList, minDate, maxDate, Locale.getDefault(), this);
@@ -151,6 +152,15 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
         //Async way
         Handler().postDelayed(Runnable {
+            var eventsDatabase:List<Events>
+            eventsDatabase = ICalendarDatabase.getInstance(applicationContext).eventsDao().allEvents
+
+            var eventList:List<DrawableCalendarEvent>
+            eventList = ArrayList()
+
+            for (i in eventsDatabase){
+                eventList.add(EventsToDrawableCalendarEventADAPTER.adaptToDrawableCalendarEvent(i,applicationContext))
+            }
             agendaCalendarView!!.init(eventList, minDate, maxDate, Locale.getDefault(), this);
             agendaCalendarView!!.addEventRenderer( DrawableEventRenderer());
 
@@ -160,6 +170,22 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
         }, 100)
 
+        //PopUp menu for Events
+        powerMenu = PowerMenu.Builder(applicationContext)
+                //.addItemList(list) // list has "Novel", "Poerty", "Art"
+                .addItem(PowerMenuItem(getString(R.string.view), false))
+                .addItem(PowerMenuItem(getString(R.string.edit), false))
+                .addItem(PowerMenuItem(getString(R.string.delete), false))
+                .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT)
+                .setLifecycleOwner(this)
+                .setMenuRadius(10f)
+                .setMenuShadow(10f)
+                .setTextColor(Color.WHITE)
+                .setSelectedTextColor(Color.BLUE)
+                .setMenuColor(ContextCompat.getColor(applicationContext,R.color.theme_primary))
+                .setSelectedMenuColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                //.setOnMenuItemClickListener(OnItemMenuClickListener())
+                .build()
 
 
     }
@@ -167,17 +193,51 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
     override fun onDaySelected(dayItem: DayItem?) {
         Log.d(LOG_TAG, String.format("Selected day: %s", dayItem));
+
     }
 
     override fun onScrollToDate(calendar: Calendar?) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar()?.setTitle(calendar?.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        if (mActionBar != null) {
+            //getSupportActionBar()?.setTitle(calendar?.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+            mActionBar.setTitle(calendar?.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
         }
     }
 
     override fun onEventSelected(event: CalendarEvent?) {
         Log.d(LOG_TAG, String.format("Selected event: %s", event));
+        powerMenu.setOnMenuItemClickListener(OnItemMenuClickListener(event,applicationContext))
+        powerMenu.showAsAnchorCenter(findViewById(R.id.agenda_calendar_view))
+
+
     }
 
+    private open class OnItemMenuClickListener(event: CalendarEvent?,context :Context): OnMenuItemClickListener<PowerMenuItem> {
+        var event:CalendarEvent? = event
+        var context: Context = context
+
+        override fun onItemClick(position: Int, item: PowerMenuItem?) {
+
+            val LOG_TAG = MainActivity::class.java.simpleName
+            Log.d(LOG_TAG, String.format("Selected Item: %d - %s", position,item));
+
+            if (position == 0){
+                //TODO: Προβολη event
+                Log.d(LOG_TAG, String.format("Event id: %d ", event?.id));
+                Log.d(LOG_TAG, String.format("Event id: %s ", event?.title));
+
+
+            }else if(position == 1){
+                //TODO: Επεξερασία event
+
+            }else if(position == 2){
+                //TODO: Διαγραφή event
+                var events: List<Events> = ICalendarDatabase.getInstance(context).eventsDao().getEvent(event!!.id)
+                ICalendarDatabase.getInstance(context).eventsDao().delete(events.get(0))
+            }
+
+
+
+        }
+    }
 
 }

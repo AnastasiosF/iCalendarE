@@ -13,4 +13,12 @@
     <string name="duration">διάρκεια</string>
     <string name="title">Τίτλος</string>
     <string name="new_event">Νέο συμβάν</string>
+    <string name="description">"Περιγραφή: "</string>
+    <string name="type_of_event">"Τύπος συμβάντος: "</string>
+    <string name="participant">"Επαφή: "</string>
+    <string name="view">Προβολή</string>
+    <string name="edit">Επεξεργασία</string>
+    <string name="delete">Διαγραφή</string>
+    <string name="add_event">Προσθήκη συμβάντος</string>
+    <string name="view_event">Προβολή συμβάντος</string>
 </resources>

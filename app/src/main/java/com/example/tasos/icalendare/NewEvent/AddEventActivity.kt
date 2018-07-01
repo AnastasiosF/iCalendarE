@@ -96,18 +96,18 @@ class AddEventActivity : AppCompatActivity() {
         val actionBarInit = ActionBarInit(mActionBar, baseContext)
         actionBarInit.initActionBar()
 
-        newEvent = Events(null,
+        newEvent = Events("",
                 "" ,
-                "",
                 0,
+                "",
                 null,
                 null,
                 null,
                 null,
-                null,
-                false
+                0,
+                ""
                 ,""
-                ,""
+                ,0
                 )
 
         startDate = Calendar.getInstance()
@@ -201,7 +201,7 @@ class AddEventActivity : AppCompatActivity() {
                 endDate = Calendar.getInstance()
                 endDate.set(year,month,day,hour+1,minute,second)
 
-                newEvent = Events(null,
+                newEvent = Events(
                         editTextTitle.text.toString(),
                         dropdownContacts.selectedItem.toString(),
                         typeOfEvent_ID,
@@ -210,7 +210,7 @@ class AddEventActivity : AppCompatActivity() {
                         CalendarTypeConverter.toLong(startDate),
                         CalendarTypeConverter.toLong(endDate),
                         "Athens",
-                        false,
+                        0,
                         "",
                         editTextNotes.text.toString())
 /*

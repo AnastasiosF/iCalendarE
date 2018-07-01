@@ -1,6 +1,7 @@
 package com.example.tasos.icalendare.Database
 
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 
@@ -20,10 +21,10 @@ interface EventsDao {
     fun insertMulti(eventsList: List<Events>)
 
     @Query("SELECT * FROM events WHERE id LIKE :id")
-    fun getEvent(id: Int): List<Events>
+    fun getEvent(id: Long): List<Events>
 
-    @Query("DELETE FROM events ")
-    fun delete()
+    @Delete
+    fun delete(events: Events)
 
 
 }

@@ -16,14 +16,15 @@ class EventsToDrawableCalendarEventADAPTER {
             var  typeOfEventList: List<String> = ICalendarDatabase.getInstance(context).typeOfEventDao().eventsList(events.typeOfEvent_ID)
             var typeOfEventTitle: String = typeOfEventList.get(0)
 
-            drawableCalendarEvent = DrawableCalendarEvent(
+            drawableCalendarEvent = DrawableCalendarEvent(events.id,
+                    0,
                     events.title,
                     events.description,
                     events.location,
-                    events.color,
                     CalendarTypeConverter.toCalendar(events.dateStart),
                     CalendarTypeConverter.toCalendar(events.dateEnd),
-                    events.allDay,
+                    0,
+                    "",
                     0,
                     events.typeOfEvent_ID,
                     events.contactName_ID,

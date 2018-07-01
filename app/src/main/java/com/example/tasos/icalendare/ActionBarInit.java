@@ -116,7 +116,7 @@ public class ActionBarInit {
 
         HamButton.Builder eventActivity = new HamButton.Builder();
         eventActivity.shadowEffect(true);
-        eventActivity.normalText("Add new event");
+        eventActivity.normalText(context.getResources().getString(R.string.add_event));
         eventActivity.normalImageRes(R.drawable.ic_event_black_24dp);
         eventActivity.normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
         eventActivity.listener(new OnBMClickListener() {
@@ -140,7 +140,7 @@ public class ActionBarInit {
 
         HamButton.Builder viewEventActivity = new HamButton.Builder();
         viewEventActivity.shadowEffect(true);
-        viewEventActivity.normalText("View event");
+        viewEventActivity.normalText(context.getString(R.string.view_event));
         viewEventActivity.normalImageRes(R.drawable.ic_event_black_24dp);
         viewEventActivity.normalColor(Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
         viewEventActivity.listener(new OnBMClickListener() {

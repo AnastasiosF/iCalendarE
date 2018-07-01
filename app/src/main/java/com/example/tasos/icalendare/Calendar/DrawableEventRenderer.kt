@@ -1,5 +1,6 @@
 package com.example.tasos.icalendare.Calendar
 
+import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.ImageView
@@ -12,7 +13,7 @@ import com.example.tasos.icalendare.Database.ICalendarDatabase
 import com.example.tasos.icalendare.R
 
 
-class DrawableEventRenderer : EventRenderer<DrawableCalendarEvent>() {
+class DrawableEventRenderer() : EventRenderer<DrawableCalendarEvent>() {
 
     // region Class - EventRenderer
 
@@ -33,29 +34,29 @@ class DrawableEventRenderer : EventRenderer<DrawableCalendarEvent>() {
 
         txtTitle.setTextColor(ContextCompat.getColor(view.context,android.R.color.black))
 
-        description.setText(event.description)
-        typeOfEvent.setText(event.typeOfEventTitle)
-        contact_ID.setText(event.contactNameID)
+        description.text = view.context.getString(R.string.description) + event.description
+        typeOfEvent.text = view.context.getString(R.string.type_of_event) + event.typeOfEventTitle
+        contact_ID.text = view.context.getString(R.string.participant) + event.contactNameID
 
 
-        txtTitle.setText(event.title)
-        txtLocation.setText(event.location)
+        txtTitle.text = event.title
+        txtLocation.text = event.location
         if(event.location != null){
             if (event.location.length > 0) {
                 locationContainer.visibility = View.VISIBLE
-                txtLocation.setText(event.getLocation())
+                txtLocation.text = event.location
             } else {
                 locationContainer.visibility = View.GONE
             }
         }
 
 
-        if (event.getTitle().equals(view.getResources().getString(R.string.agenda_event_no_events))) {
+        if (event.title.equals(view.resources.getString(R.string.agenda_event_no_events))) {
             txtTitle.setTextColor(ContextCompat.getColor(view.context,android.R.color.black))
         } else {
             txtTitle.setTextColor(ContextCompat.getColor(view.context,android.R.color.primary_text_light))
         }
-        descriptionContainer.setBackgroundColor(event.getColor())
+        descriptionContainer.setBackgroundColor(event.color)
         txtLocation.setTextColor(ContextCompat.getColor(view.context,android.R.color.primary_text_dark))
     }
 

@@ -1,5 +1,6 @@
 package com.example.tasos.icalendare.Calendar
 
+import com.example.tasos.icalendare.Database.CalendarTypeConverter
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
 import java.util.*
@@ -18,24 +19,26 @@ class DrawableCalendarEvent : BaseCalendarEvent {
 
     // region Constructors
 
-    /*constructor(id: Long,
+    constructor(id: Long,
                 color: Int,
                 title: String,
                 description: String,
                 location: String?,
-                dateStart: Long,
-                dateEnd: Long,
+                dateStart: Calendar?,
+                dateEnd: Calendar?,
                 allDay: Int,
                 duration: String,
                 drawableId: Int,
                 typeOfEvent_ID: Int,
-                contactName_ID: String
-    ) : super(id, color, title, description, location, dateStart, dateEnd, allDay, duration) {
+                contactName_ID: String,
+                typeOfEvent_Title: String
+    ) : super(id, color, title, description, location, CalendarTypeConverter.toLong(dateStart)!!, CalendarTypeConverter.toLong(dateEnd)!!, allDay, duration) {
         this.drawableId = drawableId
-        typeOfEvent__ID = typeOfEvent_ID
-        contactName__ID = contactName_ID
+        typeOfEventID = typeOfEvent_ID
+        contactNameID = contactName_ID
+        typeOfEventTitle = typeOfEvent_Title
     }
-    */
+
 
     constructor(title: String,
                 description: String,

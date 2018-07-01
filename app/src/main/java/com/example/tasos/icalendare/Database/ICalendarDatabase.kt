@@ -3,7 +3,7 @@ package com.example.tasos.icalendare.Database
 import android.arch.persistence.room.*
 import android.content.Context
 
-@Database(entities = arrayOf(Contact::class, TypeOfEvent::class, Events::class), version = 23)
+@Database(entities = arrayOf(Contact::class, TypeOfEvent::class, Events::class), version = 24)
 @TypeConverters(CalendarTypeConverter::class)
 abstract class ICalendarDatabase : RoomDatabase() {
 

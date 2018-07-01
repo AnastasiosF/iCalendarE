@@ -34,6 +34,13 @@
 
     <string name="title_activity_view_event">ViewEventActivity</string>
     <string name="add_event">Add Event</string>
+    <string name="description">Description: </string>
+    <string name="type_of_event">Type of Event: </string>
+    <string name="participant">Participant: </string>
+    <string name="view">View</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="view_event">View event</string>
 
 
 </resources>
