@@ -1,6 +1,7 @@
 package com.example.tasos.icalendare.Calendar
 
 import android.content.Context
+import android.graphics.Color
 import android.provider.CalendarContract
 import com.example.tasos.icalendare.Database.CalendarTypeConverter
 import com.example.tasos.icalendare.Database.Events
@@ -17,7 +18,7 @@ class EventsToDrawableCalendarEventADAPTER {
             var typeOfEventTitle: String = typeOfEventList.get(0)
 
             drawableCalendarEvent = DrawableCalendarEvent(events.id,
-                    0,
+                    Color.GRAY,
                     events.title,
                     events.description,
                     events.location,

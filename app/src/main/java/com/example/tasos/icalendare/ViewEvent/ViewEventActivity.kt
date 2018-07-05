@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -59,9 +60,21 @@ class ViewEventActivity : AppCompatActivity() {
     internal lateinit var dropdownToAlertUser: Spinner
     internal lateinit var dropdownTimeToAlertContact: Spinner
     internal lateinit var contactsProvider: ContactsProvider
+
+    //Dhlwnetai edw gia na mporesei na xrismopoih8ei se olh thn klassi
+    var EVENT_ID:Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_event)
+
+        //To PopUp->View/Edit stelnei to id toy event
+        //Arxikopoiw to id mesa sthn EVENTS_ID gia na mporesw na to xrisimopoihsw otan kalw
+        //to event apo thn BashDedomenwn
+        EVENT_ID = intent.getLongExtra("EVENT_ID",0)
+        Log.d("ID-ID", String.format("Event id: %d ", EVENT_ID));
+
+
         val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         toolbar.title = "Title of Event"
         setSupportActionBar(toolbar)
@@ -198,3 +211,5 @@ class ViewEventActivity : AppCompatActivity() {
     }
 
 }
+
+

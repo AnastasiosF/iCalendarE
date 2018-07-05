@@ -73,9 +73,6 @@ dependencies {
     //CalendarView
     implementation 'com.github.tibolte:agendacalendarview:1.0.4'
 
-    //PopUp Menu For Events
-    implementation 'com.github.skydoves:powermenu:2.0.4'
-
 
 
 

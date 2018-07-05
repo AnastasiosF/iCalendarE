@@ -31,6 +31,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         app:bmb_backgroundEffect="false"
-        app:bmb_boomEnum="boomParabola_2"/>
+        />
 
 </RelativeLayout>
