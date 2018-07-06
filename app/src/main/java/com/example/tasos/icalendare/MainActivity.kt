@@ -40,6 +40,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import com.example.tasos.icalendare.NewEvent.AddEventActivity
 import com.example.tasos.icalendare.ViewEvent.ViewEventActivity
 import com.nightonke.boommenu.Animation.BoomEnum
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum
@@ -49,6 +50,10 @@ import com.nightonke.boommenu.BoomMenuButton
 import com.nightonke.boommenu.ButtonEnum
 import com.nightonke.boommenu.Piece.PiecePlaceEnum
 import com.nightonke.boommenu.Util.setTextColor
+import com.skydoves.powermenu.MenuAnimation
+import com.skydoves.powermenu.OnMenuItemClickListener
+import com.skydoves.powermenu.PowerMenu
+import com.skydoves.powermenu.PowerMenuItem
 
 
 @RuntimePermissions
@@ -65,12 +70,7 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
     var agendaCalendarView: AgendaCalendarView? = null
 
-    /**
-     * Event gia na doulepsei to popUp. Axrikopoietai mesa sthn on onEventSelected(). Afou exei
-     * ginei to initialization!!!
-     */
-    var popup:PopupMenu? = null
-    var eventForPopupMenu:CalendarEvent? = null
+    var powerMenu:PowerMenu? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,9 +168,49 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
     override fun onEventSelected(event: CalendarEvent?) {
         Log.d(LOG_TAG, String.format("Selected event: %s", event))
-        eventForPopupMenu = event
-        popup?.show()
 
+        powerMenu =  PowerMenu.Builder(applicationContext)
+                .addItem(PowerMenuItem(getString(R.string.add_event),false))
+                .addItem( PowerMenuItem(getString(R.string.view_edit), false))
+                .addItem( PowerMenuItem(getString(R.string.delete), false))
+                .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT)
+                .setMenuRadius(10f)
+                .setMenuShadow(10f)
+                .setWidth(1000)
+                .setTextColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                .setSelectedTextColor(Color.WHITE)
+                .setMenuColor(Color.WHITE)
+                .setSelectedMenuColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                .setOnMenuItemClickListener(OnMenuItemClickListener { position, item ->
+                   if (position ==0){
+                       val intent:Intent = Intent(applicationContext,AddEventActivity::class.java)
+                       intent.putExtra("EVENT_START_TIME",event?.startTime)
+                       intent.putExtra("EVENT_END_TIME",event?.endTime)
+                       intent.putExtra("EVENT_DATE",event?.instanceDay)
+                       intent.putExtra("EVENT_DAY_REFERENCE",event?.dayReference)
+                       powerMenu!!.dismiss()
+                       startActivity(intent)
+                   }else if (position == 1){
+                        //Προβολη/Εξεργασία event
+                        Log.d(LOG_TAG, String.format("Event id: %d ", event?.id));
+                        Log.d(LOG_TAG, String.format("Event id: %s ", event?.title));
+                        //ViewEventActivity starts
+                        val intent:Intent = Intent(applicationContext,ViewEventActivity::class.java)
+                        intent.putExtra("EVENT_ID",event?.id)
+                        powerMenu!!.dismiss()
+                        startActivity(intent)
+
+                    }else if(position == 2) {
+                        // Διαγραφή event
+                        var events: List<Events> = ICalendarDatabase.getInstance(applicationContext).eventsDao().getEvent(event!!.id)
+                        ICalendarDatabase.getInstance(applicationContext).eventsDao().delete(events.get(0))
+                        initCalendar()
+                        powerMenu!!.dismiss()
+
+                    }
+                })
+                .build()
+        powerMenu!!.showAtCenter(findViewById(R.id.agenda_calendar_view))
     }
 
     private fun initCalendar() {
@@ -218,32 +258,6 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
     }
 
     private fun initPopUpMenu() {
-        popup = PopupMenu(applicationContext,findViewById(R.id.view_agenda_event_description))
-        popup?.inflate(R.menu.pop_up_menu)
-        popup?.setOnMenuItemClickListener {
-
-            if (it.itemId == R.id.view_edit){
-
-                //Προβολη/Εξεργασία event
-                Log.d(LOG_TAG, String.format("Event id: %d ", eventForPopupMenu?.id));
-                Log.d(LOG_TAG, String.format("Event id: %s ", eventForPopupMenu?.title));
-                //ViewEventActivity starts
-                val intent:Intent = Intent(applicationContext,ViewEventActivity::class.java)
-                intent.putExtra("EVENT_ID",eventForPopupMenu?.id)
-                this.startActivity(intent)
-                true
-
-            }else if(it.itemId == R.id.delete){
-                // Διαγραφή event
-                var events: List<Events> = ICalendarDatabase.getInstance(applicationContext).eventsDao().getEvent(eventForPopupMenu!!.id)
-                ICalendarDatabase.getInstance(applicationContext).eventsDao().delete(events.get(0))
-                initCalendar()
-                true
-            }else{
-                 false
-            }
-
-        }
 
 
     }
