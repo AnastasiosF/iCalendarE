@@ -30,7 +30,7 @@ import java.util.Random
 
 class ActionBarInit(internal var mActionBar: ActionBar?, internal var context: Context) {
     internal var DELAY_GIA_NA_KSEKINHSH_ACTIVITY = 200
-    internal var XRONOS_EKTELESIS_EFE = 100
+    internal var XRONOS_EKTELESIS_EFE = 1500
 
     fun initActionBar() {
 

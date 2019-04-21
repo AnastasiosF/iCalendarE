@@ -40,6 +40,6 @@
     <string name="view_edit">View/Edit</string>
     <string name="delete">Delete</string>
     <string name="view_event">View event</string>
-
-
+    <string name="action_settings">Settings</string>
+    action_settings
 </resources>
