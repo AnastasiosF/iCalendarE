@@ -1,8 +1,6 @@
-iCalendarE
+#iCalendarE
 
-A Try for a professional calendar
 
-Feautures:<br>
--Link Contacts with specific event<br>
--Alert Contacts via SMS before specific time
+*A Try for a professional calendar*
 
+This is a test app
