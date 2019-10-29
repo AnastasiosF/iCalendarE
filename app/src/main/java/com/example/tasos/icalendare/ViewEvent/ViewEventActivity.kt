@@ -2,11 +2,11 @@ package com.example.tasos.icalendare.ViewEvent
 
 import android.Manifest
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -156,7 +156,7 @@ class ViewEventActivity : AppCompatActivity() {
 
         dpd.accentColor = resources.getColor(R.color.colorPrimary)
 
-        dpd.show(fragmentManager, "Datepickerdialog")
+        dpd.show(supportFragmentManager, "Datepickerdialog")
     }
 
     fun emfanisiEpilogisWras() {
@@ -169,7 +169,7 @@ class ViewEventActivity : AppCompatActivity() {
         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         )
         dpd.accentColor = resources.getColor(R.color.colorPrimary)
-        dpd.show(fragmentManager, "Timepickerdialog")
+        dpd.show(supportFragmentManager, "Timepickerdialog")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

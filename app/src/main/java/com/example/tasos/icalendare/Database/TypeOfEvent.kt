@@ -1,7 +1,7 @@
 package com.example.tasos.icalendare.Database
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "event_type")
 class TypeOfEvent(var title: String, var price: Float, var duration: Int) {

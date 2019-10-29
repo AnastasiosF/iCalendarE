@@ -1,6 +1,6 @@
 package com.example.tasos.icalendare.Database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import android.content.Context
 
 @Database(entities = arrayOf(Contact::class, TypeOfEvent::class, Events::class), version = 24)

@@ -8,8 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView

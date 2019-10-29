@@ -3,8 +3,8 @@ package com.example.tasos.icalendare
 
 import android.Manifest
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.CalendarView
 import android.widget.Toast
 import com.example.tasos.icalendare.Database.Contact
@@ -22,7 +22,7 @@ import android.R.attr.maxDate
 import android.R.attr.minDate
 import com.github.tibolte.agendacalendarview.CalendarPickerController
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import com.example.tasos.icalendare.Calendar.DrawableCalendarEvent
 import com.example.tasos.icalendare.Calendar.DrawableEventRenderer
@@ -35,7 +35,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
-import android.support.v7.app.ActionBar
+import androidx.appcompat.app.ActionBar
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
         actionBarInit.initActionBar()
 
         //Arxikopoish Bashs
-        initDatabase()
+        initDatabaseWithPermissionCheck()
 
         //Arxikopoihsh Calendar
         initCalendar()
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(),CalendarPickerController {
 
     //H me8odos poy 8elw na exei dikaiwmata
     @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    private fun initDatabase() {
+    fun initDatabase() {
 
         //Pairnw tis epafes apo ton provider tou kinhtou
         val contactsProvider = ContactsProvider(applicationContext)

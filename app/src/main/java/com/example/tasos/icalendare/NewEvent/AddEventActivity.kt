@@ -2,9 +2,9 @@ package com.example.tasos.icalendare.NewEvent
 
 import android.Manifest
 import android.os.Bundle
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -145,7 +145,7 @@ class AddEventActivity : AppCompatActivity() {
         */
         //Ftiaxnw ayta ta spinner mesa se Thread giati epikoinwnoun me thn bash
         //arxikopoihsh tou ContactProvider
-        loadContacts()
+        loadContactsWithPermissionCheck()
 
         Thread(DimiourgiaSpinner()).start()
 
@@ -267,7 +267,7 @@ class AddEventActivity : AppCompatActivity() {
                 now.get(Calendar.DAY_OF_MONTH)
         )
         dpd.accentColor = resources.getColor(R.color.colorPrimary)
-        dpd.show(fragmentManager, "Datepickerdialog")
+        dpd.show(supportFragmentManager, "Datepickerdialog")
     }
 
     fun emfanisiEpilogisWras() {
@@ -282,7 +282,7 @@ class AddEventActivity : AppCompatActivity() {
         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true
         )
         dpd.accentColor = resources.getColor(R.color.colorPrimary)
-        dpd.show(fragmentManager, "Timepickerdialog")
+        dpd.show(supportFragmentManager, "Timepickerdialog")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
